@@ -1,4 +1,5 @@
 import nltk
+nltk.download('punkt')
 from flask import Flask, render_template, request, jsonify
 import joblib
 import os
