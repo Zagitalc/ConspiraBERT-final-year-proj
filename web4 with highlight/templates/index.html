@@ -14,27 +14,34 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center">Conspiracy Theory Classifier</h1>
-        <h3 class="text-center">This is a basic Conspiracy Theory Classifier</h3>
-        <form id="textForm">
-            <div class="form-group">
-                <label for="inputText">Input Text:</label>
-                <textarea class="form-control input-text" id="inputText" name="inputText" rows="4" placeholder="Enter your text here..."></textarea>
-            </div>
-            <div class="text-center mt-3">
-                <button type="submit" class="btn btn-primary">Classify</button>
-            </div>
-        </form>
-        <div id="result" class="mt-4"></div>
+        <div class="text-center mt-3">
+            <label for="modelSelection">Please choose a model for classification:</label>
+            <select id="modelSelection">
+                <option value="sklearn">Naive Bayes classifier </option>
+                <option value="bert">BERT classifier</option>
+            </select>
+        </div>
+
+        
+        
+        <div id="result" class="mt-4"></div>    
+            <form id="textForm">
+                <div class="form-group">
+                    <label for="inputText">Input Text:</label>
+                    <textarea class="form-control input-text" id="inputText" name="inputText" rows="4" placeholder="Enter your text here..."></textarea>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="submit" class="btn btn-primary">Classify</button>
+                </div>
+            </form>
+        
         
         <div id="userText" class="collapse">
             <div class="card card-body">
                 <h4>Your Text:</h4>
-                <p id="userTextInput"></p>
+                <div id="userTextInput"></div>
             </div>
-            <div class="card card-body">
-                <h4>Key words</h4>
-                <ul id="rankedWords"></ul>
-            </div>
+            
             <div class="card card-body">
                 <h4>Sentence Information</h4>
                 <div id="sentenceInfo"></div>
