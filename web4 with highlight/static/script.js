@@ -73,12 +73,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                     // Heat map effect 
                     // highlight text color based on the classification result
-                    if (result === 0) {  // Non conspiracy: green for low probability and yellow for high probability
-                        listItem.style.backgroundColor = `rgb(${intensity}, ${255 - intensity}, 0)`;
-                    }
-                    else {  // Conspiracy, yellow for low probability and red for high probability
-                        listItem.style.backgroundColor = `rgb(${255}, ${255 - intensity}, 0)`;  // Yellow to red gradient
-                    }
+                    // if (result === 0) {  // Non conspiracy: green for low probability and yellow for high probability
+                    //     listItem.style.backgroundColor = `rgb(${255}, ${255}, 255)`;
+                    // }
+                    // else {  // 
+                    //     // non consp just highlight as white/very light pink
+                    //     //Conspiracy, yellow for low probability and red for high probability
+                    listItem.style.backgroundColor = `rgb(${intensity}, 255, 255)`;  // Yellow to red gradient
+                    // }
 
                     sentenceInfoList.appendChild(listItem);
                     console.log("result is", result, "listItem.style.backgroundColor", listItem.style.backgroundColor)
