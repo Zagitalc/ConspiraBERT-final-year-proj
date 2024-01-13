@@ -51,7 +51,7 @@ def classify():
                 # Tokenize the input sentence and convert to tensors
                 inputs = Bert_tokenizer(sentence, return_tensors="pt", padding=True, truncation=True, max_length=512)
                 
-                # Get the model's predictions
+                # Get the model's predictionss
                 outputs = Bert_classifier(**inputs)
                 probs = torch.nn.functional.softmax(outputs.logits, dim=-1)
                 result = torch.argmax(probs).item()
