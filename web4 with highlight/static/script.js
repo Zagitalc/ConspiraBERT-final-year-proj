@@ -8,9 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     textForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        // resultDiv.innerHTML = '';
-        // resultDiv.innerHTML = 'Classifying...';
-        // resultDiv.innerHTML = '';
+
 
         // selection of model
         const inputText = document.getElementById('inputText').value;
@@ -61,7 +59,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
                     // Calculate the color intensity based on the probability
-                    const intensity = Math.floor(prob * 255);  // Scale the probability to 0-255
+                    var intensity = Math.floor(prob * 255);  // Scale the probability to 0-255
+
+                    if (result === 0) {
+                        intensity = Math.floor(127 * (1 - prob))
+
+                    } else {
+                        intensity = Math.floor(127 + 127 * (prob))
+
+                    }
 
                     // Heat map effect 
                     // highlight text color based on the classification result
