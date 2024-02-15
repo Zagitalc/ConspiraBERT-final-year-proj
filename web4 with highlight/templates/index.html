@@ -45,21 +45,14 @@
         
     <body style="background-color: #aee0df">
         <div class="container mt-5" style="background-color: #aee0df">
-            <!-- <h1 class="text-center">Conspiracy Theory Classifier</h1>
-            <div class="text-center mt-3">
-                <label for="modelSelection">Please choose a model for classification:</label>
-                <select id="modelSelection">
-                    <option value="sklearn">Naive Bayes classifier </option>
-                    <option value="bert">BERT classifier</option>
-                </select>
-            </div> -->
+            
 
             
             
         
             <form id="textForm" class= "text-left" style="background-color: #aee0df">
                 <div class="form-group ">
-                    <h4><label for="inputText" class="text-dark text-left" style="background-color: #aee0df">Input Text for conspiracy classification:</label></h4>
+                    <h4><label for="inputText" class="text-dark text-left" style="background-color: #aee0df">Please input text for conspiracy classification:</label></h4>
                     <textarea class="form-control input-text " style="background-color: #aee0df" id="inputText" name="inputText" rows="4" placeholder="Enter your text here..."></textarea>
                 </div>
                 <div class="text-left mt-3">
@@ -68,18 +61,18 @@
             </form>
         </div>    
     
-        <div id="userText" class="collapse   text-dark"  >
+        <div id="userText" class="collapse   text-dark"  style="display: block;">
             <div class="card card-body  text-dark" style="background-color: #aee0df">
                 <div class="text-dark" style="background-color: #aee0df">
                     <!-- <h4>Here is a highlighted version of your text:</h4> -->
-                    <h4>Here is a summary of your text:</h4>
+                    
                     <div id="userTextInput"></div>
                     <div class="container mt-5" >
-                        <!-- <h3>Color Legend:</h3>
+                        <h3>Color Legend:</h3>
                         <div>
                             
                             <span style="background-color: rgb(255, 255, 255); display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin-left: 10px;"></span>
-                            <span>: High Probability Non Conspiracy</span>
+                            <span>: Non Conspiracy</span>
                         </div>
                         <div>
                             
@@ -90,32 +83,17 @@
                             
                             <span style="background-color: rgb(255, 0, 0); display: inline-block; width: 20px; height: 20px; vertical-align: middle; margin-left: 10px;"></span>
                             <span>: High Probability Conspiracy</span>
-                        </div> -->
-                        <!-- <p>This news <b>isn't conspiratorial</b>. It's actually debunking a conspiracy theory. The content being debunked within the news article contains elements that are conspiratorial in nature.
-                             Here are the phrases and words within the debunked content that contain conspiratorial elements:
-                            <ul>
-
-                                <li><b>Inside Job</b>: This phrase implies secretive, planned actions by specific individuals, hinting at a covert plot or conspiracy rather than an accidental event.
-                                </li>
-                                <li><b>Orchestrated by J.P. Morgan</b> Singling out an influential figure like J.P. Morgan as the mastermind behind a significant event implies secretive, malicious intentions and covert actions.
-                                </li>
-                                <li><b>Kill three prominent businessmen</b> Suggesting that the sinking aimed to eliminate specific individuals insinuates a targeted act of harm, which aligns with the nature of conspiracy theories involving deliberate acts of violence or harm.
-                                </li>
-                                <li><b>Opposed the formation of the Federal Reserve</b>: Linking the tragedy to opposition against a powerful institution like the Federal Reserve implies a broader political or financial conspiracy, suggesting powerful entities were involved in silencing dissent.
-                                </li>
-                                <li><b>Conspiracy Theory</b> The phrase itself suggests a belief in a hidden plot or plan orchestrated by influential figures, often at the expense of others or against the public's interest.
-                                </li>
-                            </ul>These phrases collectively suggest a secretive, planned, and harmful intent behind the Titanic's sinking, attributing it to specific powerful individuals and their alleged motives. However, the debunking article refutes these claims using factual evidence, historical context, and expert opinions, highlighting the lack of credibility and validity in these conspiratorial assertions.
-                        </p> -->
+                        </div>
+                        
                     </div>
                 </div>
                 
 
             </div>
             <div class="card card-body text-dark" style="background-color: #aee0df">
-                <h4>Text Information</h4>
+                <h4>Classification Result</h4>
                 <!-- <div id="result"><div> -->
-                <div id="sentenceInfo"></div>
+                <div id="sentenceInfo"> Conspiracy information about your text appears here</div>
             </div>
 
         </div>
