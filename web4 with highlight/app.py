@@ -66,8 +66,15 @@ def classify():
         # summarized = summarizer(text, min_length=75, max_length=300)
 
         # # Print summarized text
-        # print(summarized)
 
+
+
+        # try register domain name
+        # try lets encrypt for https, clear the 403 forbidden  error
+        # try aws route 53
+        # db record time user used in classifying tasks
+        # catch and show error in the webpage
+        # search similar user study cases, how they did questionnaire, review process?reearch
 
 
         #tokenise and split sentences
@@ -179,5 +186,26 @@ def summarize_and_classify():
         return jsonify({'error': 'Invalid input format. Please provide the required fields "text" and "model".'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run(host='0.0.0.0',port=8090)
+    # app.run(debug=True)
+    app.run()
+    # app.run(ssl_context='adhoc')
+    
+
+# users may type 16.171.111.198/1  or 16.171.111.198/2
+# instead of https
+# to access version 1 or version 2 of the website
+
+
+# host needs to set up gunicorn server and nginx and a service first time to provide http proxy requests 
+
+# pip install gunicorn
+# gunicorn -b 0.0.0.0:8000 app:app
+# ctrl c ...
+    
+
+
+
+# sudo systemct1 start nginx
+# sudo systemct1 enable nginx.
+
+#for more https://www.youtube.com/watch?v=z5XiVh6v4uI
