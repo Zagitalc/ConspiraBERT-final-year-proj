@@ -10,10 +10,10 @@ import torch
 from transformers import BertForSequenceClassification, BertTokenizer,  AutoModelForSeq2SeqLM, AutoTokenizer, pipeline
 
 #to use the server
-# run app py
+#run app py
 #
 #disown
-#kill of necessary
+#kill if necessary
 
 #consent form  after demo... ask participants there in the website
 # add flags to lead to other version of the summarisation models.
