@@ -16,7 +16,7 @@ A **fine-tuned BERT model** was trained on the **LOCO dataset** and deployed as 
 ## 📊 Project Data
 
 - **Model:** Fine-tuned BERT (LOCO dataset)  
-- **Dataset:** LOCO (Language of Conspiracy Online)  
+- **Dataset:** LOCO (Language of Conspiracy)  
 - **Application Type:** Flask-based Web Application  
 - **Endpoints:** `/1/classify`, `/2/summarize-and-classify`  
 - **Technologies:** Python, Flask, NLTK, Hugging Face Transformers  
