@@ -2,6 +2,7 @@
 # Conspiracy Theories: Understanding and Predicting Conspiratorial Content using Natural Language Processing
 This project investigates the linguistic features and patterns of conspiracy theories in online texts. A machine learning model was developed using a fine-tuned BERT architecture, trained on the LOCO dataset, and deployed as a web application, allowing users to input content for classification. Preliminary findings indicate that identifying distinct patterns in the model layers is challenging, as the model can conflate sentiment analysis with conspiracy classification—highlighting ambiguities in the training objective and the influence of data quality. Future work will explore more advanced LLMs, including OpenAI o1 and open-source Qwen models, to improve detection accuracy.
 
+
 This Flask-based web application provides two main NLP functionalities:
 
 Text Classification
