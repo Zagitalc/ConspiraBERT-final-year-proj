@@ -1,5 +1,5 @@
 # Durham University BSc Computer Science Final Year Project
-## Conspiracy Theories: Understanding and Predicting Conspiratorial Content using NLP
+## Conspiracy Theories: Understanding and Predicting Conspiratorial Content Using NLP
 
 ### 📌 Project Overview
 This project explores the linguistic features and patterns of conspiracy theories in online texts.  
