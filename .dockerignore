@@ -1,0 +1,12 @@
+.git
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.DS_Store
+
+# Runtime-inactive large files
+project/*.ipynb
+project/yt_training_set.json
+project/output_file.xlsx
+project/key2.ppk

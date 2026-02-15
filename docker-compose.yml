@@ -1,0 +1,9 @@
+services:
+  conspira-bert:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: conspira-bert
+    ports:
+      - "5000:5000"
+    restart: unless-stopped

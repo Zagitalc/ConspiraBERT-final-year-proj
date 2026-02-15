@@ -1,0 +1,7 @@
+Flask==2.3.3
+gunicorn==21.2.0
+joblib==1.4.2
+nltk==3.8.1
+sentencepiece==0.1.99
+torch==2.2.2
+transformers==4.39.3

@@ -1,88 +1,66 @@
-# Durham University BSc Computer Science Final Year Project
-## Conspiracy Theories: Understanding and Predicting Conspiratorial Content Using NLP
+# ConspiraBERT Final Year Project
 
-### 📌 Project Overview
-This project explores the linguistic features and patterns of conspiracy theories in online texts.  
-A **fine-tuned BERT model** was trained on the **LOCO dataset** and deployed as a **web application**, allowing users to classify text for conspiratorial content.
+Flask web app for sentence-level conspiracy classification using a fine-tuned BERT model, with an optional summarise-then-classify route.
 
-### 🔍 Key Findings
-- Identifying **distinct patterns** in model layers is **challenging**.
-- The model often **confuses sentiment analysis with conspiracy classification**, revealing **ambiguities** in the training objective.
-- **Data quality significantly affects model performance**.
-- Future improvements will explore **advanced LLMs**, such as **OpenAI o1** and **open-source Qwen models**, for better detection accuracy.
+## What this repo contains
+- `project/app.py`: Flask app and API routes.
+- `project/templates/` and `project/static/`: Web UI.
+- `project/tokenizer/`: tokenizer files used by summarisation.
+- Training notebooks and project artifacts for report evidence.
 
----
+## Required model folders
+The app expects these folders before startup:
+- `project/models/` (BERT classifier + tokenizer files)
+- `project/tm-small-cnn-model/` (summarisation model files)
 
-## 📊 Project Data
+This repo includes empty placeholder folders (`.gitkeep` only). Add the actual model files to those folders.
 
-- **Model:** Fine-tuned BERT (LOCO dataset)  
-- **Dataset:** LOCO (Language of Conspiracy)  
-- **Application Type:** Flask-based Web Application  
-- **Endpoints:** `/1/classify`, `/2/summarize-and-classify`  
-- **Technologies:** Python, Flask, NLTK, Hugging Face Transformers  
-- **Deployment:** Local & Production (Gunicorn + Nginx)  
+## API routes
+- `GET /` renders the landing UI.
+- `GET /1` renders classify-only UI.
+- `GET /2` renders summarise-and-classify UI.
+- `POST /1/classify` classifies each sentence from input text.
+- `POST /2/summarize-and-classify` summarises input then classifies sentences in the summary.
 
+Input format for both POST routes:
+```json
+{
+  "text": "your text here",
+  "model": "bert"
+}
+```
 
----
+## Run locally
+From repo root:
 
-## 🌐 Web Application Functionalities
-
-This **Flask-based** web application provides two primary **NLP capabilities**:
-
-### **1️⃣ Text Classification**
-**📌 Endpoint:**  
-
-**🔹 Functionality:**  
-- Accepts **JSON input** containing a text and a model identifier (currently supports `"bert"`).
-
-**🔹 Process:**  
-1. **Tokenizes** the input text into sentences using **NLTK**.
-2. Uses a **pre-trained BERT model** (with tokenizer) to classify each sentence as **conspiracy-related or not**.
-3. Computes an **overall classification score** based on the proportion of flagged sentences.
-4. Returns a **JSON response** with:
-   - **Sentence-by-sentence classification**
-   - **Probability scores**
-   - **Overall classification percentage**
-
----
-
-### **2️⃣ Summarise and Classify**
-**📌 Endpoint:**  
-
-**🔹 Functionality:**  
-- Accepts **JSON input** containing a text and a model identifier.
-
-**🔹 Process:**  
-1. **Summarises** the input text using a **Hugging Face summarisation pipeline**.
-2. **Tokenizes** the summary into sentences using **NLTK**.
-3. **Classifies** each sentence using the **BERT-based method** (as above).
-
-**🔹 Output:**  
-- Returns a **JSON response** with:
-  - **Summarised text**
-  - **Sentence classifications**
-  - **Overall classification metrics**
-
----
-
-## 📌 Additional Routes
-- `/` – Renders the default index page.
-- `/1` – Renders **version 1** of the interface.
-- `/2` – Renders **version 2** of the interface (includes summarisation feature).
-
----
-
-## ⚙️ Setup and Deployment
-
-### 🔹 Dependencies
-- **Python Packages:** `Flask`, `nltk`, `torch`, `transformers`, `joblib`, etc.
-- The application downloads **NLTK’s 'punkt' tokenizer** for sentence tokenisation.
-
-### 🔹 Model Directories
-- The **pre-trained BERT classifier** and tokenizer are loaded from the `models/` directory.
-- The **summarisation model** and its tokenizer are loaded from `tm-small-cnn-model/` and `tokenizer/` directories, respectively.
-
-### 🔹 Running the Application
-To run the server locally, execute:
 ```bash
-python app.py
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python project/app.py
+```
+
+Open:
+- `http://127.0.0.1:5000/1`
+- `http://127.0.0.1:5000/2`
+
+## Run with Docker
+From repo root:
+
+```bash
+docker compose up --build
+```
+
+Open:
+- `http://localhost:5000/1`
+- `http://localhost:5000/2`
+
+Stop:
+
+```bash
+docker compose down
+```
+
+## Notes on compatibility
+- `requirements.txt` is pinned for stable runtime with this legacy code path.
+- `nltk==3.8.1` is pinned so `nltk.download("punkt")` in `project/app.py` works as written.
