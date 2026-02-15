@@ -1,88 +1,153 @@
-# Durham University BSc Computer Science Final Year Project
-## Conspiracy Theories: Understanding and Predicting Conspiratorial Content Using NLP
+# ConspiraBERT v2
 
-### 📌 Project Overview
-This project explores the linguistic features and patterns of conspiracy theories in online texts.  
-A **fine-tuned BERT model** was trained on the **LOCO dataset** and deployed as a **web application**, allowing users to classify text for conspiratorial content.
+ConspiraBERT v2 is a rebuilt conspiracy-framing analyzer focused on modern API design, resilient inference fallback, and a cleaner UX.
 
-### 🔍 Key Findings
-- Identifying **distinct patterns** in model layers is **challenging**.
-- The model often **confuses sentiment analysis with conspiracy classification**, revealing **ambiguities** in the training objective.
-- **Data quality significantly affects model performance**.
-- Future improvements will explore **advanced LLMs**, such as **OpenAI o1** and **open-source Qwen models**, for better detection accuracy.
+## What Changed in v2
 
----
+### Architecture
+- Replaced legacy Flask route stack with a FastAPI backend.
+- Added typed request/response schemas with Pydantic.
+- Introduced provider-based inference flow:
+  - Primary: OpenAI API
+  - Fallback: local heuristic analyzer (no external API required)
+- Added health and version endpoints for operational visibility.
 
-## 📊 Project Data
+### API Migration
+- Removed legacy routes:
+  - `/1/classify`
+  - `/2/summarize-and-classify`
+- Added v2 routes:
+  - `POST /api/v2/analyze`
+  - `GET /api/v2/health`
+  - `GET /api/v2/version`
 
-- **Model:** Fine-tuned BERT (LOCO dataset)  
-- **Dataset:** LOCO (Language of Conspiracy)  
-- **Application Type:** Flask-based Web Application  
-- **Endpoints:** `/1/classify`, `/2/summarize-and-classify`  
-- **Technologies:** Python, Flask, NLTK, Hugging Face Transformers  
-- **Deployment:** Local & Production (Gunicorn + Nginx)  
+### Inference Behavior
+- v2 classifies conspiratorial framing (not raw sentiment).
+- If OpenAI is configured and available, v2 uses OpenAI.
+- If OpenAI is unavailable (missing key, timeout, package issue), v2 automatically returns heuristic results with a warning.
+- Sentence tokenization is robust:
+  - prefers NLTK `punkt` when available
+  - falls back to regex sentence splitting if tokenizer download/lookup fails
 
+### Frontend
+- Replaced old Bootstrap interface with a minimal single-page frontend.
+- Added:
+  - confidence meter
+  - sentence-level labels
+  - signal chips
+  - model/provider badge
+  - explicit loading, warning, and error states
 
----
+### Deployment and Tooling
+- Added Docker support (`Dockerfile`, `docker-compose.yml`, `.dockerignore`).
+- Added Make targets for dev/test/build/run workflows.
+- Added test scaffolding for API, schema validation, heuristic provider, and analyzer behavior.
 
-## 🌐 Web Application Functionalities
+## Repo Layout (v2)
 
-This **Flask-based** web application provides two primary **NLP capabilities**:
+- `project/backend/main.py`: FastAPI app entrypoints/routes
+- `project/backend/config.py`: settings + config fingerprint
+- `project/backend/schemas.py`: request/response contracts
+- `project/backend/services/analyzer.py`: provider selection + fallback orchestration
+- `project/backend/services/providers/openai_provider.py`: OpenAI inference adapter
+- `project/backend/services/providers/heuristic_provider.py`: local fallback analyzer
+- `project/frontend/`: static UI assets
+- `project/app.py`: compatibility launcher (`python app.py`)
 
-### **1️⃣ Text Classification**
-**📌 Endpoint:**  
+## API Contract
 
-**🔹 Functionality:**  
-- Accepts **JSON input** containing a text and a model identifier (currently supports `"bert"`).
+### `POST /api/v2/analyze`
+Request JSON:
+- `text` (string, required)
+- `summarize` (bool, default `true`)
+- `include_sentence_breakdown` (bool, default `true`)
+- `max_sentences` (int, default `80`, range `1..200`)
+- `language_hint` (string or `null`)
 
-**🔹 Process:**  
-1. **Tokenizes** the input text into sentences using **NLTK**.
-2. Uses a **pre-trained BERT model** (with tokenizer) to classify each sentence as **conspiracy-related or not**.
-3. Computes an **overall classification score** based on the proportion of flagged sentences.
-4. Returns a **JSON response** with:
-   - **Sentence-by-sentence classification**
-   - **Probability scores**
-   - **Overall classification percentage**
+Response JSON:
+- `overall_label`: `conspiracy | uncertain | non_conspiracy`
+- `confidence`: float `0..1`
+- `score`: int `0..100`
+- `summary`: string or `null`
+- `sentence_results`: list of sentence-level classifications
+- `signals`: weighted evidence signals
+- `model_info`: `{ provider, model, latency_ms, warning? }`
+- `disclaimer`: user-facing caveat
+- `warning`: optional degradation/fallback note
 
----
+### `GET /api/v2/health`
+Returns provider readiness:
+- `openai_ready`
+- `fallback_ready`
 
-### **2️⃣ Summarise and Classify**
-**📌 Endpoint:**  
+### `GET /api/v2/version`
+Returns:
+- app name
+- app version
+- config fingerprint
 
-**🔹 Functionality:**  
-- Accepts **JSON input** containing a text and a model identifier.
+## Run Locally (Python)
 
-**🔹 Process:**  
-1. **Summarises** the input text using a **Hugging Face summarisation pipeline**.
-2. **Tokenizes** the summary into sentences using **NLTK**.
-3. **Classifies** each sentence using the **BERT-based method** (as above).
-
-**🔹 Output:**  
-- Returns a **JSON response** with:
-  - **Summarised text**
-  - **Sentence classifications**
-  - **Overall classification metrics**
-
----
-
-## 📌 Additional Routes
-- `/` – Renders the default index page.
-- `/1` – Renders **version 1** of the interface.
-- `/2` – Renders **version 2** of the interface (includes summarisation feature).
-
----
-
-## ⚙️ Setup and Deployment
-
-### 🔹 Dependencies
-- **Python Packages:** `Flask`, `nltk`, `torch`, `transformers`, `joblib`, etc.
-- The application downloads **NLTK’s 'punkt' tokenizer** for sentence tokenisation.
-
-### 🔹 Model Directories
-- The **pre-trained BERT classifier** and tokenizer are loaded from the `models/` directory.
-- The **summarisation model** and its tokenizer are loaded from `tm-small-cnn-model/` and `tokenizer/` directories, respectively.
-
-### 🔹 Running the Application
-To run the server locally, execute:
 ```bash
+cd /Users/longhchung/Documents/GitHub/ConspiraBERT-reworked/project
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
 python app.py
+```
+
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+## Run with Docker
+
+```bash
+cd /Users/longhchung/Documents/GitHub/ConspiraBERT-reworked/project
+cp .env.example .env
+docker compose up --build
+```
+
+Open [http://127.0.0.1:8000](http://127.0.0.1:8000).
+
+## Environment Variables
+
+`project/.env`:
+
+```env
+OPENAI_API_KEY=
+OPENAI_MODEL=
+APP_ENV=development
+```
+
+Notes:
+- If `OPENAI_API_KEY` is empty, app still works via heuristic fallback.
+- `OPENAI_MODEL` is optional; default model is configured in backend settings.
+
+## Example Request
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/v2/analyze \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "The media is hiding the truth about this event.",
+    "summarize": true,
+    "include_sentence_breakdown": true,
+    "max_sentences": 80
+  }'
+```
+
+## Troubleshooting
+
+| Problem | Symptoms | Fix |
+|---|---|---|
+| Missing dependencies | `ModuleNotFoundError` | Activate venv and run `pip install -r requirements.txt` |
+| Docker daemon not running | `Cannot connect to the Docker daemon` | Start Docker Desktop, wait until healthy, rerun compose |
+| Missing `.env` for compose | `open .../.env: no such file or directory` | `cp .env.example .env` in `project/` |
+| No OpenAI key | health shows `openai_ready=false` | Add `OPENAI_API_KEY` to `.env` or run fallback mode |
+
+## Make Targets
+
+From `project/`:
+- `make dev`
+- `make test`
+- `make docker-build`
+- `make docker-run`
